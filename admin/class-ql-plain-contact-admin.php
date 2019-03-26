@@ -116,7 +116,46 @@ class Ql_Plain_Contact_Admin {
 
 		?>
 
-		<p>Shortcode content here</p>
+		<form action="" method="post" id="" class="plain-contact">
+
+			<p>
+				<label for="pc_name">Name</label>
+			</p>
+			<p>
+				<input type="text" name="pc_name" id="pc_name" class="" maxlength="100" value="" />
+			</p>
+
+			<p>
+				<label for="pc_email">Email</label>
+			</p>
+			<p>
+				<input type="text" name="pc_email" id="pc_email" class="" maxlength="100" value="" />
+			</p>
+
+			<p>
+				<label for="pc_subject">Subject</label>
+			</p>
+			<p>
+				<input type="text" name="pc_subject" id="pc_subject" class="" maxlength="100" value="" />
+			</p>
+
+			<p>
+				<label for="pc_sum">Sum of [formula]</label>
+			</p>
+			<p>
+				<input type="text" name="pc_sum" id="pc_sum" class="" maxlength="" value="" />
+			</p>
+
+			<p>
+				<label for="pc_message">Message</label>
+			</p>
+			<p>
+				<textarea rows="5" name="pc_message" id="pc_message" class="">Message content... </textarea>
+			</p>
+
+			<p><input type="submit" value="Submit" name="pc_formsend" id="pc_formsend" class="" /></p>
+
+		</form>
 
 		<?php
 

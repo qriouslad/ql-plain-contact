@@ -2,3 +2,11 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+
+ .plain-contact p {
+ 	margin-bottom: 10px;
+ }
+
+ #pc_name, #pc_email, #pc_subject, #pc_sum {
+ 	width: 70%;
+ }
