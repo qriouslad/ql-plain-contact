@@ -112,6 +112,23 @@ class Ql_Plain_Contact_Admin {
 					$atts
 				);
 
+		// Ensure form data originates from the contact form, and that submit button with the specified 'name' is set, i.e. clicked
+
+		if ( ( $_SERVER['REQUEST_METHOD'] == 'POST' ) && ( isset( $_POST['pc_formsend'] ) ) ){
+
+			// Grab posted form data and sanitize them
+			$form_data = array(
+				'pc_name'    => sanitize_text_field( $_POST['pc_name'] ),
+				'pc_email'   => sanitize_email( $_POST['pc_email'] ),
+				'pc_subject' => sanitize_text_field( $_POST['pc_subject'] ),
+				'pc_sum'     => sanitize_text_field( $_POST['pc_sum'] ),
+				'pc_message' => sanitize_textarea_field( $_POST['pc_message'] ),
+			);
+
+		}
+
+		dump($form_data);
+
 		ob_start();
 
 		?>
