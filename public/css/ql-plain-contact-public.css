@@ -3,10 +3,24 @@
  * included in this file.
  */
 
- .plain-contact p {
- 	margin-bottom: 10px;
- }
+.plain-contact p {
+	margin-bottom: 10px;
+}
 
- #pc_name, #pc_email, #pc_subject, #pc_sum {
- 	width: 70%;
- }
+.plain-contact label {
+	font-weight: bold;
+}
+
+#pc_name, #pc_email, #pc_subject, #pc_sum {
+	width: 70%;
+}
+
+.plain-contact .hide {
+	display: none;
+}
+
+.plain-contact .error {
+	font-weight: normal;
+	font-style: italic;
+	color: red;
+}
