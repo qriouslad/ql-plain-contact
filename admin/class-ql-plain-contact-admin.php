@@ -52,6 +52,8 @@ class Ql_Plain_Contact_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		add_shortcode( 'plaincontact', array( $this, 'ql_plain_contact' ) );
+
 	}
 
 	/**
@@ -99,5 +101,29 @@ class Ql_Plain_Contact_Admin {
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ql-plain-contact-admin.js', array( 'jquery' ), $this->version, false );
 
 	}
+
+	/**
+	 * Shortcode function
+	 */
+	public function ql_plain_contact($atts) {
+
+		$atts = shortcode_atts(
+					array(),
+					$atts
+				);
+
+		ob_start();
+
+		?>
+
+		<p>Shortcode content here</p>
+
+		<?php
+
+		return ob_get_clean();
+
+	}
+
+
 
 }
