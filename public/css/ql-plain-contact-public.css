@@ -1,0 +1,54 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+.plain-contact input[type=text], 
+.plain-contact textarea {
+	border-color: #ccc;
+}
+
+.plain-contact p {
+	margin-bottom: 10px;
+}
+
+.plain-contact label {
+	display: inline-block;
+	width: 20%;
+	min-width: 100px;
+	font-weight: bold;
+}
+
+.plain-contact label[for="pc_message"] {
+	position: relative;
+	top: -134px;
+}
+
+#pc_name, #pc_email, #pc_subject, #pc_message {
+	width: 79%;
+}
+
+#pc_num {
+	width: 60px;
+}
+
+.plain-contact input[type="submit"] {
+	float: right;
+}
+
+.plain-contact .hide {
+	display: none;
+}
+
+.plain-contact .error {
+	margin-left: 21%;
+	font-weight: normal;
+	font-style: italic;
+	color: red;
+}
+
+.plain-contact .pc-num {
+	display: block;
+	float: none;
+	clear: both;
+}
