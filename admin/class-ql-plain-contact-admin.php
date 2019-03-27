@@ -123,6 +123,7 @@ class Ql_Plain_Contact_Admin {
 						'error_invalid_number'    => 'Please enter the correct number',
 						'input_valid_message'     => 'All is good.',
 						'success'                 => 'Thank you for your message! I will get back to you as soon as I can.',
+						'email_to'                => get_bloginfo('admin_email'),
 					),
 					$atts
 				);
@@ -143,11 +144,11 @@ class Ql_Plain_Contact_Admin {
 
 			// Grab posted form data and sanitize them
 			$form_data = array(
-				'pc_name'    => sanitize_text_field( $_POST['pc_name'] ),
-				'pc_email'   => sanitize_email( $_POST['pc_email'] ),
-				'pc_subject' => sanitize_text_field( $_POST['pc_subject'] ),
-				'pc_message' => sanitize_textarea_field( $_POST['pc_message'] ),
-				'pc_sum'     => sanitize_text_field( $_POST['pc_sum'] ),
+				'pc_name'    => sanitize_text_field( stripslashes( $_POST['pc_name'] ) ),
+				'pc_email'   => sanitize_email( stripslashes( $_POST['pc_email'] ) ),
+				'pc_subject' => sanitize_text_field( stripslashes ( $_POST['pc_subject'] ) ),
+				'pc_message' => sanitize_textarea_field( stripslashes( $_POST['pc_message'] ) ),
+				'pc_num'     => sanitize_text_field( $_POST['pc_num'] ),
 			);
 
 			// Validate form data and define error message if validation failed
@@ -204,35 +205,46 @@ class Ql_Plain_Contact_Admin {
 
 			}
 
-			if ( $form_data['pc_sum'] == $_SESSION['pc_randomnumber'] ) {
+			if ( $form_data['pc_num'] == $_SESSION['pc_randomnumber'] ) {
 
-				$error_status['pc_sum'] = false;
-				$validation_result['pc_sum'] = $atts['input_valid_message'];
+				$error_status['pc_num'] = false;
+				$validation_result['pc_num'] = $atts['input_valid_message'];
 
 			} else {
 
-				$error_status['pc_sum'] = true;
+				$error_status['pc_num'] = true;
 				$error = true;
-				$validation_result['pc_sum'] = $atts['error_invalid_number'];
+				$validation_result['pc_num'] = $atts['error_invalid_number'];
 
 			}
 
 			if ( $error == false ) {
 
+				// Send email
+
+				$subject = '[' . get_bloginfo('name') . '] ' . $form_data['pc_subject'];
+
+				$message = 'From: ' . $form_data['pc_name'] . ' <' . $form_data['pc_email'] . '>' . "\r\n\r\n" . $form_data['pc_message'];
+
+				wp_mail( $atts['email_to'], $subject, $message );
+
+				// Mark process as complete. This will be used to clear session variable (random number)
 				$process_complete = true;
 
+				// Success message variable
 				$success_info = '<p class="success">'.$atts['success'].'</p>';
 
 			}
 
 		}
 
-		dump( $form_data );
-		dump( $error_status );
-		dump( $error );
-		dump( $validation_result );
-		dump( $process_complete );
-		dump( $_SESSION['pc_randomnumber'] );
+		// For checking variables with https://wordpress.org/plugins/debug-toolkit/
+		// dump( $form_data );
+		// dump( $error_status );
+		// dump( $error );
+		// dump( $validation_result );
+		// dump( $process_complete );
+		// dump( $_SESSION['pc_randomnumber'] );
 
 		// Return the contact form from output buffer
 
@@ -243,41 +255,35 @@ class Ql_Plain_Contact_Admin {
 		<form action="" method="post" id="" class="plain-contact">
 
 			<p>
-				<label for="pc_name">Name: <span class="<?php echo ( ( true == $error_status['pc_name'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_name']; ?></span></label>
-			</p>
-			<p>
-				<input type="text" name="pc_name" id="pc_name" class="" maxlength="100" value="<?php echo $form_data['pc_name']; ?>" />
-			</p>
-
-			<p>
-				<label for="pc_email">Email: <span class="<?php echo ( ( true == $error_status['pc_email'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_email']; ?></span></label>
-			</p>
-			<p>
-				<input type="text" name="pc_email" id="pc_email" class="" maxlength="100" value="<?php echo $form_data['pc_email']; ?>" />
+				<label for="pc_name">Name:</label>
+				<input type="text" name="pc_name" id="pc_name" class="" maxlength="100" value="<?php echo stripslashes( $_POST['pc_name'] ); ?>" />
+				<span class="<?php echo ( ( true == $error_status['pc_name'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_name']; ?></span>
 			</p>
 
 			<p>
-				<label for="pc_subject">Subject: <span class="<?php echo ( ( true == $error_status['pc_subject'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_subject']; ?></span></label>
-			</p>
-			<p>
-				<input type="text" name="pc_subject" id="pc_subject" class="" maxlength="100" value="<?php echo $form_data['pc_subject']; ?>" />
-			</p>
-
-			<p>
-				<label for="pc_message">Message: <span class="<?php echo ( ( true == $error_status['pc_message'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_message']; ?></span></label>
-			</p>
-			<p>
-				<textarea rows="5" name="pc_message" id="pc_message" class=""><?php echo $form_data['pc_message']; ?></textarea>
+				<label for="pc_email">Email:</label>
+				<input type="text" name="pc_email" id="pc_email" class="" maxlength="100" value="<?php echo stripslashes( $_POST['pc_email'] ); ?>" />
+				<span class="<?php echo ( ( true == $error_status['pc_email'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_email']; ?></span>
 			</p>
 
 			<p>
-				<label for="pc_sum">Type in the number <?php echo $_SESSION['pc_randomnumber']; ?> below: <span class="<?php echo ( ( true == $error_status['pc_sum'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_sum']; ?></span></label>
-			</p>
-			<p>
-				<input type="text" name="pc_sum" id="pc_sum" class="" maxlength="" value="<?php echo $form_data['pc_sum']; ?>" />
+				<label for="pc_subject">Subject:</label>
+				<input type="text" name="pc_subject" id="pc_subject" class="" maxlength="100" value="<?php echo stripslashes( $_POST['pc_subject'] ); ?>" />
+				<span class="<?php echo ( ( true == $error_status['pc_subject'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_subject']; ?></span>
 			</p>
 
-			<p><input type="submit" value="Submit" name="pc_formsend" id="pc_formsend" class="" /></p>
+			<p>
+				<label for="pc_message">Message:</label>
+				<textarea rows="5" name="pc_message" id="pc_message" class=""><?php echo stripslashes( $_POST['pc_message'] ); ?></textarea>
+				<span class="<?php echo ( ( true == $error_status['pc_message'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_message']; ?></span>
+			</p>
+
+			<p>
+				<label for="pc_num">Type in <?php echo $_SESSION['pc_randomnumber']; ?>:</label>
+				<input type="text" name="pc_num" id="pc_num" class="" maxlength="" value="<?php echo stripslashes( $_POST['pc_num'] ); ?>" />
+				<input type="submit" value="Submit" name="pc_formsend" id="pc_formsend" class="" />
+				<span class="pc-num <?php echo ( ( true == $error_status['pc_num'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_num']; ?></span>
+			</p>
 
 		</form>
 
@@ -290,9 +296,10 @@ class Ql_Plain_Contact_Admin {
 
 			unset( $_SESSION['pc_randomnumber'] );
 
-			dump( $_SESSION['pc_randomnumber'] );
-
 			return $success_info;
+
+			// For checking variables with https://wordpress.org/plugins/debug-toolkit/
+			// dump( $_SESSION['pc_randomnumber'] );
 
 		}
 
