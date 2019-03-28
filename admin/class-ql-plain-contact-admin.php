@@ -103,12 +103,21 @@ class Ql_Plain_Contact_Admin {
 	}
 
 	/**
-	 * Shortcode function
+	 * Conditionally start session for simple numeric captcha feature
+	 * Source: https://stackoverflow.com/a/49025103
 	 */
-	public function ql_plain_contact($atts) {
+
+	public function session_starter() {
 
 		// Start session for simple math captcha validation
 		if ( ! isset( $_SESSION ) ) session_start();
+
+	}
+
+	/**
+	 * Shortcode function
+	 */
+	public function ql_plain_contact($atts) {
 
 		// Define random number between 10 to 99 to use in captcha
 		$_SESSION['pc_randomnumber'] = isset( $_SESSION['pc_randomnumber'] ) ? $_SESSION['pc_randomnumber'] : rand( 10, 99 ) ;
