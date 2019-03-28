@@ -52,3 +52,25 @@
 	float: none;
 	clear: both;
 }
+
+@media (max-width:960px) {
+
+	.plain-contact label {
+		display: block;
+		width: 100%;
+	}
+
+	#pc_name, #pc_email, #pc_subject, #pc_message, #pc_num {
+		width: 100%;
+	}
+
+	.plain-contact label[for="pc_message"] {
+		position: inherit;
+	}
+
+	.plain-contact input[type="submit"] {
+		float: none;
+		margin-top: 1.5em;
+	}
+
+}
