@@ -73,4 +73,8 @@
 		margin-top: 1.5em;
 	}
 
+	.plain-contact .error {
+		margin-left: 0;
+	}
+
 }
