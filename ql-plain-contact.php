@@ -16,7 +16,7 @@
  * Plugin Name:       Plain Contact
  * Plugin URI:        https://github.com/qriouslad/ql-plain-contact
  * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.2.0
+ * Version:           1.2.1
  * Author:            Bowo
  * Author URI:        https://bowo.io
  * License:           GPL-2.0+
