@@ -120,7 +120,10 @@ class Ql_Plain_Contact_Admin {
 	public function ql_plain_contact($atts) {
 
 		// Define random number between 10 to 99 to use in captcha
-		$_SESSION['pc_randomnumber'] = isset( $_SESSION['pc_randomnumber'] ) ? $_SESSION['pc_randomnumber'] : rand( 10, 99 ) ;
+		$_SESSION['pc_randomnumber'] = isset( $_SESSION['pc_randomnumber'] ) ? $_SESSION['pc_randomnumber'] : rand( 45, 99 );
+
+		$num1 = rand( 15, 30 );
+		$num2 = $_SESSION['pc_randomnumber'] - $num1;
 
 		// Create nonce
 		$session_nonce = wp_create_nonce( 'contact_message_' . $_SESSION['pc_randomnumber'] );
@@ -163,7 +166,7 @@ class Ql_Plain_Contact_Admin {
 				'pc_subject' => sanitize_text_field( stripslashes ( $_POST['pc_subject'] ) ),
 				'pc_message' => sanitize_textarea_field( stripslashes( $_POST['pc_message'] ) ),
 				'pc_num'     => sanitize_text_field( $_POST['pc_num'] ),
-				'pc_nonce'     => sanitize_text_field( $_POST['pc_nonce'] ),
+				'pc_nonce'   => sanitize_text_field( $_POST['pc_nonce'] ),
 			);
 
 			// Validate form data and define error message if validation failed
@@ -309,7 +312,7 @@ class Ql_Plain_Contact_Admin {
 
 			<p>
 				<input type="hidden" name="pc_nonce" value="<?php echo $session_nonce; ?>" />
-				<label for="pc_num">Type in <?php echo $_SESSION['pc_randomnumber']; ?>:</label>
+				<label for="pc_num"><?php echo $num2 ?> + <?php echo $num1; ?> =</label>
 				<input type="text" name="pc_num" id="pc_num" class="" maxlength="" value="<?php echo stripslashes( $_POST['pc_num'] ); ?>" />
 				<input type="submit" value="Submit" name="pc_formsend" id="pc_formsend" class="" />
 				<span class="pc-num <?php echo ( ( true == $error_status['pc_num'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_num']; ?></span>
