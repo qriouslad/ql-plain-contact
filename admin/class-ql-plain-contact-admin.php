@@ -267,13 +267,13 @@ class Ql_Plain_Contact_Admin {
 		}
 
 		// For checking variables with https://wordpress.org/plugins/debug-toolkit/
-		dump( $form_data );
-		dump( $error_status );
-		dump( $error );
-		dump( $validation_result );
-		dump( $process_complete );
-		dump( $_SESSION['pc_randomnumber'] );
-		dump( $session_nonce );
+		// dump( $form_data );
+		// dump( $error_status );
+		// dump( $error );
+		// dump( $validation_result );
+		// dump( $process_complete );
+		// dump( $_SESSION['pc_randomnumber'] );
+		// dump( $session_nonce );
 
 		// Return the contact form from output buffer
 
