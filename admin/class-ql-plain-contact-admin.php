@@ -122,6 +122,9 @@ class Ql_Plain_Contact_Admin {
 		// Define random number between 10 to 99 to use in captcha
 		$_SESSION['pc_randomnumber'] = isset( $_SESSION['pc_randomnumber'] ) ? $_SESSION['pc_randomnumber'] : rand( 10, 99 ) ;
 
+		// Create nonce
+		$session_nonce = wp_create_nonce( 'contact_message_' . $_SESSION['pc_randomnumber'] );
+
 		$atts = shortcode_atts(
 					array(
 						'error_incomplete_fields' => 'Please fill in all the required fields.',
@@ -130,6 +133,8 @@ class Ql_Plain_Contact_Admin {
 						'error_invalid_subject'   => 'Please enter at least 2 characters',
 						'error_invalid_message'   => 'Please enter at least 10 characters',
 						'error_invalid_number'    => 'Please enter the correct number',
+						'valid_nonce'             => 'All good. Thanks for using a valid nonce.',
+						'invalid_nonce'           => 'Looks like you\'re not posting data from this contact form. Better luck next time. :-)',
 						'input_valid_message'     => 'All is good.',
 						'success'                 => 'Thank you for your message! I will get back to you as soon as I can.',
 						'email_to'                => get_bloginfo('admin_email'),
@@ -158,6 +163,7 @@ class Ql_Plain_Contact_Admin {
 				'pc_subject' => sanitize_text_field( stripslashes ( $_POST['pc_subject'] ) ),
 				'pc_message' => sanitize_textarea_field( stripslashes( $_POST['pc_message'] ) ),
 				'pc_num'     => sanitize_text_field( $_POST['pc_num'] ),
+				'pc_nonce'     => sanitize_text_field( $_POST['pc_nonce'] ),
 			);
 
 			// Validate form data and define error message if validation failed
@@ -227,6 +233,19 @@ class Ql_Plain_Contact_Admin {
 
 			}
 
+			if ( wp_verify_nonce( $form_data['pc_nonce'], 'contact_message_' . $_SESSION['pc_randomnumber'] ) ) {
+
+				$error_status['pc_nonce'] = false;
+				$validation_result['pc_nonce'] = $atts['valid_nonce'];
+
+			} else {
+
+				$error_status['pc_nonce'] = true;
+				$error = true;
+				$validation_result['pc_nonce'] = $atts['invalid_nonce'];
+
+			}
+
 			if ( $error == false ) {
 
 				// Send email
@@ -248,12 +267,13 @@ class Ql_Plain_Contact_Admin {
 		}
 
 		// For checking variables with https://wordpress.org/plugins/debug-toolkit/
-		// dump( $form_data );
-		// dump( $error_status );
-		// dump( $error );
-		// dump( $validation_result );
-		// dump( $process_complete );
-		// dump( $_SESSION['pc_randomnumber'] );
+		dump( $form_data );
+		dump( $error_status );
+		dump( $error );
+		dump( $validation_result );
+		dump( $process_complete );
+		dump( $_SESSION['pc_randomnumber'] );
+		dump( $session_nonce );
 
 		// Return the contact form from output buffer
 
@@ -288,11 +308,14 @@ class Ql_Plain_Contact_Admin {
 			</p>
 
 			<p>
+				<input type="hidden" name="pc_nonce" value="<?php echo $session_nonce; ?>" />
 				<label for="pc_num">Type in <?php echo $_SESSION['pc_randomnumber']; ?>:</label>
 				<input type="text" name="pc_num" id="pc_num" class="" maxlength="" value="<?php echo stripslashes( $_POST['pc_num'] ); ?>" />
 				<input type="submit" value="Submit" name="pc_formsend" id="pc_formsend" class="" />
 				<span class="pc-num <?php echo ( ( true == $error_status['pc_num'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_num']; ?></span>
 			</p>
+
+			<span class="pc-nonce <?php echo ( ( true == $error_status['pc_nonce'] ) ? 'error' : 'hide' ) ?>"><?php echo $validation_result['pc_nonce']; ?></span>
 
 		</form>
 
