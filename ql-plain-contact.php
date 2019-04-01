@@ -15,8 +15,8 @@
  * @wordpress-plugin
  * Plugin Name:       Plain Contact
  * Plugin URI:        https://github.com/qriouslad/ql-plain-contact
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.2.2
+ * Description:       This plugin creates a simple and secure contact form via the [plaincontact] shortcode that you add to the content area of your page/post.
+ * Version:           1.3.0
  * Author:            Bowo
  * Author URI:        https://bowo.io
  * License:           GPL-2.0+
